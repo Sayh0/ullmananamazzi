@@ -147,13 +147,25 @@ Edge가 설치된 PC라면 WebView2도 함께 설치되어 있습니다.
 
 ## 설치 및 실행
 
-### 1. 의존성 설치
+### 방법 A — 빌드된 EXE 직접 실행 (권장)
+
+Python 설치 없이 바로 실행할 수 있습니다.
+
+```
+dist/ullmananamazzi.exe
+```
+
+원하는 위치에 복사 후 실행하면 됩니다. `config.json`과 `widget.log`는 EXE와 같은 폴더에 자동 생성됩니다.
+
+### 방법 B — 소스에서 직접 실행
+
+#### 1. 의존성 설치
 
 ```bash
 pip install -r requirements.txt
 ```
 
-### 2. 실행
+#### 2. 실행
 
 ```bash
 python main.py
