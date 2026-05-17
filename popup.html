@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Claude Usage</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@400;500&display=swap');
+
+  :root {
+    --bg: #0d0f12;
+    --bg2: #13161b;
+    --bg3: #1a1e25;
+    --border: #2a2f3a;
+    --text: #ffffff;
+    --text-dim: #ffffff;
+    --accent: #d97757;
+    --accent2: #5c9eff;
+    --green: #4caf82;
+    --yellow: #e6b84a;
+    --red: #e05c5c;
+    --radius: 10px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    font-size: 12px;
+    border-radius: var(--radius);
+    overflow: hidden;
+    border: 1px solid var(--border);
+    user-select: none;
+    min-width: 240px;
+  }
+
+  /* 드래그 핸들 */
+  #header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 10px 6px;
+    background: var(--bg2);
+    border-bottom: 1px solid var(--border);
+    cursor: move;
+    -webkit-app-region: drag;
+  }
+
+  #header-left {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .logo-dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 6px var(--accent);
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+
+  #header-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--text-dim);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  #header-controls {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    -webkit-app-region: no-drag;
+  }
+
+  .ctrl-btn {
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+    font-size: 9px;
+    font-family: 'JetBrains Mono', monospace;
+    padding: 2px 6px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.15s;
+    letter-spacing: 0.05em;
+  }
+  .ctrl-btn:hover { border-color: var(--accent2); color: var(--accent2); }
+  .ctrl-btn.active { border-color: var(--accent); color: var(--accent); background: rgba(217,119,87,0.08); }
+
+  /* 상태 바 */
+  #status-bar {
+    padding: 4px 10px;
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  #status-text {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    color: var(--text-dim);
+  }
+
+  #next-update {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    color: var(--text-dim);
+  }
+
+  /* 콘텐츠 영역 */
+  #content {
+    padding: 8px 10px;
+  }
+
+  /* 사용량 행 */
+  .quota-row {
+    margin-bottom: 8px;
+  }
+  .quota-row:last-child { margin-bottom: 0; }
+
+  .quota-label-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 3px;
+  }
+
+  .quota-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--text-dim);
+    letter-spacing: 0.05em;
+  }
+
+  .quota-values {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--text);
+  }
+
+  .quota-reset {
+    font-size: 9px;
+    color: var(--text-dim);
+    margin-top: 2px;
+    text-align: right;
+  }
+
+  /* 프로그레스 바 */
+  .bar-track {
+    width: 100%;
+    height: 5px;
+    background: var(--bg3);
+    border-radius: 3px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .bar-fill {
+    height: 100%;
+    border-radius: 3px;
+    transition: width 0.4s ease, background-color 0.3s ease;
+    background: var(--green);
+  }
+
+  .bar-fill.warn { background: var(--yellow); }
+  .bar-fill.danger { background: var(--red); }
+
+  /* 구분선 */
+  .divider {
+    height: 1px;
+    background: var(--border);
+    margin: 7px 0;
+  }
+
+  /* 섹션 레이블 (상세 모드) */
+  .section-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    color: var(--text-dim);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+    opacity: 0.6;
+  }
+
+  /* 에러/로딩 상태 */
+  #empty-state {
+    padding: 16px 10px;
+    text-align: center;
+    color: var(--text-dim);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+  }
+
+  /* 추가 사용량 강조 */
+  .extra-badge {
+    display: inline-block;
+    background: rgba(230, 184, 74, 0.12);
+    border: 1px solid rgba(230, 184, 74, 0.3);
+    color: var(--yellow);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    padding: 1px 5px;
+    border-radius: 3px;
+    letter-spacing: 0.05em;
+  }
+
+  /* 버전 표시 */
+  #footer {
+    padding: 4px 10px;
+    background: var(--bg2);
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  #footer-version {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    color: var(--text-dim);
+    opacity: 0.4;
+  }
+
+  #stale-indicator {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    color: var(--red);
+    display: none;
+  }
+
+  body.stale #content { opacity: 0.4; }
+  body.stale #stale-indicator { display: block; }
+</style>
+</head>
+<body>
+
+<div id="header">
+  <div id="header-left">
+    <div class="logo-dot"></div>
+    <span id="header-title">Claude Usage</span>
+  </div>
+  <div id="header-controls">
+    <button class="ctrl-btn" id="btn-simple" onclick="setMode('simple')">Simple</button>
+    <button class="ctrl-btn" id="btn-detailed" onclick="setMode('detailed')">Detail</button>
+    <button class="ctrl-btn" onclick="if(window.pywebview) pywebview.api.close()" style="border-color:transparent; opacity:0.5;">✕</button>
+  </div>
+</div>
+
+<div id="status-bar">
+  <span id="status-text">Connecting...</span>
+  <span id="next-update"></span>
+</div>
+
+<div id="content">
+  <div id="empty-state">Loading usage data...</div>
+</div>
+
+<div id="footer">
+  <span id="footer-version">v1.0.0</span>
+  <span id="stale-indicator">⚠ stale</span>
+</div>
+
+<script>
+  let currentMode = 'simple';
+  let usageData = null;
+  let lastUpdated = null;
+  let pollInterval = 60;
+  let countdownTimer = null;
+  let countdown = 0;
+
+  // Python(pywebview)에서 호출하는 진입점
+  function updateData(data, mode, interval) {
+    usageData = data;
+    currentMode = mode || currentMode;
+    pollInterval = interval || pollInterval;
+    lastUpdated = Date.now();
+    countdown = pollInterval;
+    document.body.classList.remove('stale');
+    setMode(currentMode, false);
+    renderContent();
+    startCountdown();
+  }
+
+  function markStale(reason) {
+    document.body.classList.add('stale');
+    const reauth = (reason === 'reauth_needed' || reason === 'no_credentials' || reason === 'no_refresh_token');
+    if (reauth) {
+      const labelMap = {
+        reauth_needed: 'Refresh token rejected',
+        no_credentials: 'credentials.json not found',
+        no_refresh_token: 'refreshToken missing',
+      };
+      document.getElementById('status-text').textContent = labelMap[reason] || 'Auth failed';
+      const el = document.getElementById('content');
+      el.style.opacity = '1';
+      el.innerHTML =
+        '<div id="empty-state" style="color:var(--red); line-height:1.6">' +
+        '재로그인 필요<br>' +
+        '<span style="color:var(--text); font-size:9px">' +
+        '터미널에서 <code>claude</code> 실행 후 <code>/login</code>' +
+        '</span></div>';
+    } else {
+      document.getElementById('status-text').textContent = 'Update failed';
+    }
+  }
+
+  function setMode(mode, notify = true) {
+    currentMode = mode;
+    document.getElementById('btn-simple').classList.toggle('active', mode === 'simple');
+    document.getElementById('btn-detailed').classList.toggle('active', mode === 'detailed');
+    renderContent();
+    if (notify && window.pywebview) {
+      pywebview.api.set_mode(mode);
+    }
+  }
+
+  function startCountdown() {
+    if (countdownTimer) clearInterval(countdownTimer);
+    countdownTimer = setInterval(() => {
+      countdown--;
+      if (countdown <= 0) {
+        document.getElementById('next-update').textContent = 'updating...';
+      } else {
+        document.getElementById('next-update').textContent = `next: ${countdown}s`;
+      }
+    }, 1000);
+  }
+
+  function renderContent() {
+    if (!usageData) return;
+
+    const now = new Date();
+    const ago = lastUpdated ? Math.round((Date.now() - lastUpdated) / 1000) : 0;
+    document.getElementById('status-text').textContent = `Updated ${ago}s ago`;
+
+    if (currentMode === 'simple') {
+      renderSimple();
+    } else {
+      renderDetailed();
+    }
+
+    if (window.pywebview) {
+      const h = document.body.scrollHeight;
+      pywebview.api.resize(h);
+    }
+  }
+
+  function renderSimple() {
+    const d = usageData;
+    let html = '';
+
+    // 5시간 세션
+    if (d.five_hour) {
+      html += quotaRow('5H SESSION', d.five_hour, true);
+    }
+    // 주간
+    if (d.seven_day) {
+      html += '<div class="divider"></div>';
+      html += quotaRow('WEEKLY', d.seven_day, true);
+    }
+    const el = document.getElementById('content');
+    el.innerHTML = html || '<div id="empty-state">No data available</div>';
+  }
+
+  function renderDetailed() {
+    const d = usageData;
+    let html = '';
+    const skip = ['extra_usage'];
+
+    // 알려진 quota 필드 순서 우선
+    const knownOrder = ['five_hour', 'seven_day', 'seven_day_sonnet', 'seven_day_opus'];
+    const keys = [
+      ...knownOrder.filter(k => d[k] != null),
+      ...Object.keys(d).filter(k => !knownOrder.includes(k) && !skip.includes(k) && d[k] != null && typeof d[k] === 'object')
+    ];
+
+    keys.forEach((key, i) => {
+      if (i > 0) html += '<div class="divider"></div>';
+      html += quotaRow(formatKey(key), d[key], true);
+    });
+
+    // 추가 사용량
+    if (d.extra_usage !== undefined && d.extra_usage !== null) {
+      html += '<div class="divider"></div>';
+      html += extraUsageRow(d.extra_usage);
+    }
+
+    const el = document.getElementById('content');
+    el.innerHTML = html || '<div id="empty-state">No data available</div>';
+  }
+
+  function quotaRow(label, quota, showReset) {
+    if (!quota) return '';
+    const pct = Math.min(quota.utilization ?? 0, 100);
+    const barClass = pct >= 90 ? 'danger' : pct >= 70 ? 'warn' : '';
+    const pctText = `${pct.toFixed(1)}%`;
+    const resetText = quota.resets_at ? resetCountdown(quota.resets_at) : '';
+
+    return `
+      <div class="quota-row">
+        <div class="quota-label-row">
+          <span class="quota-label">${label}</span>
+          <span class="quota-values">${pctText}</span>
+        </div>
+        <div class="bar-track">
+          <div class="bar-fill ${barClass}" style="width:${pct}%"></div>
+        </div>
+        ${showReset && resetText ? `<div class="quota-reset">${resetText}</div>` : ''}
+      </div>`;
+  }
+
+  function extraUsageRow(extra) {
+    if (extra === null || extra === undefined) return '';
+    const enabled = extra.is_enabled ?? false;
+    const used = extra.used_credits ?? 0;
+    const limit = extra.monthly_limit ?? 0;
+    const pct = Math.min(extra.utilization ?? 0, 100);
+    const barClass = pct >= 90 ? 'danger' : pct >= 70 ? 'warn' : '';
+    return `
+      <div class="quota-row">
+        <div class="quota-label-row">
+          <span class="quota-label">EXTRA USAGE</span>
+          <span class="extra-badge">${enabled ? 'ON' : 'OFF'}</span>
+        </div>
+        ${enabled ? `
+        <div class="quota-label-row" style="margin-top:4px">
+          <span class="quota-values">$${used.toFixed(2)} / $${limit}</span>
+          <span class="quota-values" style="color:var(--text-dim)">(${pct.toFixed(1)}%)</span>
+        </div>
+        <div class="bar-track" style="margin-top:3px">
+          <div class="bar-fill ${barClass}" style="width:${pct}%"></div>
+        </div>` : ''}
+      </div>`;
+  }
+
+  function resetCountdown(isoStr) {
+    const resetAt = new Date(isoStr);
+    const now = new Date();
+    const diff = resetAt - now;
+    if (diff <= 0) return 'Resetting...';
+    const h = Math.floor(diff / 3600000);
+    const m = Math.floor((diff % 3600000) / 60000);
+    if (h > 0) return `resets in ${h}h ${m}m`;
+    return `resets in ${m}m`;
+  }
+
+  function formatNum(n) {
+    if (n >= 1000000) return (n / 1000000).toFixed(1) + 'M';
+    if (n >= 1000) return (n / 1000).toFixed(0) + 'K';
+    return String(n);
+  }
+
+  function formatKey(key) {
+    return key.replace(/_/g, ' ').toUpperCase();
+  }
+
+  // 초기 모드 버튼 상태
+  setMode(currentMode, false);
+</script>
+</body>
+</html>

@@ -1,0 +1,23 @@
+# 런타임 생성 파일
+config.json
+widget.log
+widget.log.*
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# PyInstaller 빌드
+dist/
+build/
+*.spec
+
+# IDE
+.vscode/
+.idea/
+
+# 로컬 훅 설정 (권한은 공유하지 않음)
+.claude/settings.local.json
