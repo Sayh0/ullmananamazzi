@@ -28,6 +28,8 @@
 
 ## 3. 주요 기능
 
+![트레이 아이콘](capture/capture1.png) ![Simple 모드](capture/capture2.png) ![Detail 모드](capture/capture3.png)
+
 **🟠 트레이 아이콘 — 사용률 실시간 표시**
 
 | 상태 | 아이콘 |
