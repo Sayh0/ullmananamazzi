@@ -76,27 +76,56 @@ def main():
         return img
 
     # ── 폴링 스레드 ──────────────────────────────────────────
+    _FAIL_NOTIFY_THRESHOLD = 5  # 연속 실패 N회 후 토스트 알림
+
+    def _tray_notify(title: str, msg: str, tooltip: str) -> None:
+        if not _tray_ref[0]:
+            return
+        _tray_ref[0].title = tooltip
+        try:
+            _tray_ref[0].notify(msg, title)
+        except Exception:
+            pass  # notify 미지원 환경 무시
+
     def poll_loop():
+        fail_count = 0
+        notified = False
+
         while True:
             try:
                 data = api.fetch_usage()
                 if data:
                     overlay.update(data)
                     pct = (data.get("five_hour") or {}).get("utilization")
-                    if _tray_ref[0] and pct is not None:
+                    if _tray_ref[0]:
                         _tray_ref[0].icon = make_icon(pct)
+                        _tray_ref[0].title = "Claude Usage"
                     _log.debug("poll ok — five_hour utilization=%.1f%%", pct or 0)
+                    fail_count = 0
+                    notified = False
                 else:
+                    fail_count += 1
                     status = auth.get_auth_status()
                     overlay.mark_stale(status)
                     if _tray_ref[0]:
                         _tray_ref[0].icon = make_icon(None)
-                    _log.warning("poll returned no data — auth_status=%s", status)
+                    _log.warning("poll returned no data — auth_status=%s (fail=%d)", status, fail_count)
+                    if fail_count >= _FAIL_NOTIFY_THRESHOLD and not notified:
+                        reauth = status in ("reauth_needed", "no_credentials", "no_refresh_token")
+                        if reauth:
+                            _tray_notify("Claude Usage", "재로그인 필요 — claude 실행 후 /login", "Claude Usage ⚠ 재로그인 필요")
+                        else:
+                            _tray_notify("Claude Usage", "사용량 API 응답 없음 — 업데이트 확인 필요", "Claude Usage ⚠ API 오류")
+                        notified = True
                 time.sleep(cfg["poll_interval"])
             except Exception as e:
+                fail_count += 1
                 status = auth.get_auth_status()
                 overlay.mark_stale(status)
-                _log.error("poll exception — %s: %s — sleeping 300s", type(e).__name__, e)
+                _log.error("poll exception — %s: %s — sleeping 300s (fail=%d)", type(e).__name__, e, fail_count)
+                if fail_count >= _FAIL_NOTIFY_THRESHOLD and not notified:
+                    _tray_notify("Claude Usage", "사용량 API 응답 없음 — 업데이트 확인 필요", "Claude Usage ⚠ API 오류")
+                    notified = True
                 time.sleep(300)  # 429 등 오류 시 5분 대기
 
     poll_thread = threading.Thread(target=poll_loop, daemon=True)

@@ -22,7 +22,8 @@
 | 2026-05-18 | _hooks/log_fix.py | fix | note 컬럼 공백 | `⚠ 이유 미기입` placeholder | 이유 미기입 항목을 명시적으로 표시 |
 | 2026-05-18 00:09 | main.py | add | 정적 아이콘 | `make_icon(pct)` + `_tray_ref` | 트레이 아이콘에 5H 세션 사용률 % 실시간 표시 |
 | 2026-05-18 00:11 | main.py | fix | `ellipse` 배경 + 고정 폰트 크기 | `rectangle` 배경 + 최대 폰트 크기 자동 탐색 | 아이콘 배경 사각형으로 변경, 글자 최대화 요청 |
-| 2026-05-18 00:17 | require_note.py | add |  | `(신규)` | PreToolUse 훅 — ⚠ 미기입 상태에서 소스파일 편집 차단 |
+| 2026-05-18 00:17 | require_note.py | add | | `(신규)` | PreToolUse 훅 — ⚠ 미기입 상태에서 소스파일 편집 차단 |
 | 2026-05-18 00:19 | main.py | fix | `f"{int(pct)}%"` | `f"{int(pct)}"` | % 제거로 글자 수 줄여 폰트 크기 최대화 |
 | 2026-05-18 00:28 | main.py | fix | `cfg.get("poll_interval", 60)` | `cfg.get("poll_interval", 120)` | config.py 기본값(120)과 fallback 불일치 표준화 |
 | 2026-05-18 00:31 | main.py | fix | `cfg.get("poll_interval", 120)` | `cfg["poll_interval"]` | config.load()가 항상 DEFAULTS를 병합하므로 fallback은 데드 코드 — 제거 |
+| 2026-05-18 | main.py | add | 연속 실패 무음 처리 | `fail_count` + `icon.notify()` + `icon.title` 변경 | 5회 연속 폴링 실패 시 Windows 토스트 알림 및 툴팁 변경으로 API 오류 감지 |
