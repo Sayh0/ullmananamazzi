@@ -308,3 +308,11 @@ widget.log.2    # 그 이전 로그
 - **비공식 API**: `api.anthropic.com/api/oauth/usage`는 Anthropic이 공개한 공식 API가 아닙니다. 언제든 변경되거나 차단될 수 있습니다.
 - **Claude Code 필수**: 토큰을 `~/.claude/credentials.json`에서 읽으므로 Claude Code가 설치되어 있고 로그인된 상태여야 합니다.
 - **개인 사용 목적**: 본인 계정의 사용량만 조회합니다.
+
+API 변경 여부를 모니터링하려면 동일한 엔드포인트를 사용하는 아래 레퍼런스 프로젝트를 함께 확인하세요.
+
+---
+
+## 레퍼런스
+
+- [jens-duttke/usage-monitor-for-claude](https://github.com/jens-duttke/usage-monitor-for-claude) — 동일한 비공식 API를 사용하는 레퍼런스 프로젝트. API 엔드포인트나 응답 구조가 변경될 경우 해당 레포의 이슈/커밋을 통해 빠르게 확인 가능.
