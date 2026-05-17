@@ -105,7 +105,7 @@ $CLAUDE_CONFIG_DIR/credentials.json  (환경변수 설정 시)
 ### 토큰 갱신
 
 토큰 만료 60초 전부터 자동 갱신을 시도합니다.  
-`claude auth refresh` CLI 대신 OAuth 엔드포인트를 직접 호출합니다 (Claude Code v2.1.141에서 해당 서브커맨드 제거됨).
+`claude auth` CLI에는 토큰 갱신 서브커맨드가 없어 OAuth 엔드포인트를 직접 호출합니다.
 
 ```
 POST https://console.anthropic.com/v1/oauth/token

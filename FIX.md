@@ -8,7 +8,7 @@
 | 2026-05-17 | auth.py | fix | `.credentials.json` / `claudeAiOauthAccount` 하드코딩 | 다중 경로 + 키 파싱 순서 | `token found: False` — 실제 파일명·키명 불일치 |
 | 2026-05-17 | api.py | fix | `claude.ai/api/usage_and_limits` | `api.anthropic.com/api/oauth/usage` | 404 수정, `anthropic-beta`·`User-Agent` 헤더 추가 |
 | 2026-05-17 | popup.html | fix | `used/limit/reset_at` 구조 가정 | `utilization/resets_at` 직접 사용 | API 응답 구조 불일치로 UI 미표시 |
-| 2026-05-17 | auth.py | fix | `subprocess.run(["claude", "auth", "refresh"])` | direct OAuth POST to `console.anthropic.com/v1/oauth/token` | v2.1.141에서 `auth refresh` 서브커맨드 제거 → 무한 401 |
+| 2026-05-17 | auth.py | fix | `subprocess.run(["claude", "auth", "refresh"])` | direct OAuth POST to `console.anthropic.com/v1/oauth/token` | `claude auth`에 refresh 서브커맨드가 없음 — 원본 코드가 존재하지 않는 CLI 명령 호출 → 무한 401 |
 | 2026-05-17 | auth.py | fix | Python-urllib 기본 UA | `User-Agent: claude-code/1.0` | Cloudflare 1010 차단 회피 |
 | 2026-05-17 | auth.py, overlay.py, popup.html, main.py | add | — | `get_auth_status()` / `mark_stale(reason)` / JS `markStale(reason)` | 재로그인 필요 상태 4종 분류 및 UI 안내 |
 | 2026-05-17 22:47 | popup.html | auto | `document.getElementById('content').innerHTML =` | `const el = document.getElementById('content');` | `body.stale #content{opacity:0.4}` 가 reauth 메시지도 흐리게 만들어 인라인 오버라이드 추가 |
