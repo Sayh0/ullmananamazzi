@@ -61,6 +61,8 @@
 
 ## 4. 세팅 — 5분 이내 완료
 
+> **필수 전제조건**: [Claude Code CLI](https://claude.ai/download)가 설치되어 있고 로그인된 상태여야 합니다. 이 위젯은 Claude Code가 저장한 OAuth 토큰을 재활용합니다.
+
 **Step 1. 실행 파일 다운로드**
 
 ```

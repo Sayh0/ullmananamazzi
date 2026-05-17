@@ -147,6 +147,8 @@ Edge가 설치된 PC라면 WebView2도 함께 설치되어 있습니다.
 
 ## 설치 및 실행
 
+> **필수 전제조건**: [Claude Code CLI](https://claude.ai/download)가 설치되어 있고 로그인된 상태여야 합니다. 이 위젯은 Claude Code가 저장한 OAuth 토큰(`~/.claude/.credentials.json`)을 재활용합니다.
+
 ### 방법 A — 빌드된 EXE 직접 실행 (권장)
 
 Python 설치 없이 바로 실행할 수 있습니다.
