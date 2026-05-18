@@ -110,10 +110,13 @@ def main():
                     if _tray_ref[0]:
                         _tray_ref[0].icon = make_icon(None)
                     _log.warning("poll returned no data — auth_status=%s (fail=%d)", status, fail_count)
+                    # credentials 관련 문제 시 위젯을 자동 표시하여 안내
+                    reauth = status in ("reauth_needed", "no_credentials", "no_refresh_token")
+                    if reauth and fail_count == 1:
+                        overlay.show()
                     if fail_count >= _FAIL_NOTIFY_THRESHOLD and not notified:
-                        reauth = status in ("reauth_needed", "no_credentials", "no_refresh_token")
                         if reauth:
-                            _tray_notify("Claude Usage", "재로그인 필요 — claude 실행 후 /login", "Claude Usage ⚠ 재로그인 필요")
+                            _tray_notify("Claude Usage", "Claude Code CLI 재실행 필요 — claude 실행 후 /login", "Claude Usage ⚠ CLI 재실행 필요")
                         else:
                             _tray_notify("Claude Usage", "사용량 API 응답 없음 — 업데이트 확인 필요", "Claude Usage ⚠ API 오류")
                         notified = True
