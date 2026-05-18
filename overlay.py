@@ -152,6 +152,15 @@ class OverlayWindow:
         except Exception as e:
             print(f"[overlay] update_mode error: {e}")
 
+    def set_animation(self, enabled: bool):
+        """Clawd 애니메이션 표시 여부를 변경합니다."""
+        if not self.window:
+            return
+        try:
+            self.window.evaluate_js(f"setAnimation({str(enabled).lower()});")
+        except Exception:
+            pass
+
     def set_on_top(self, enabled: bool):
         """항상 위 표시 여부를 변경합니다."""
         self.cfg["always_on_top_overlay"] = enabled

@@ -40,7 +40,7 @@
   /* 드래그 핸들 */
   #header {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: space-between;
     padding: 8px 10px 6px;
     background: var(--bg2);
@@ -55,31 +55,24 @@
     gap: 6px;
   }
 
-  .logo-dot {
-    width: 7px; height: 7px;
-    border-radius: 50%;
-    background: var(--accent);
-    box-shadow: 0 0 6px var(--accent);
-    animation: pulse 2s ease-in-out infinite;
-  }
-
-  @keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.4; }
+  #clawd-canvas {
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
   }
 
   #header-title {
     font-family: 'JetBrains Mono', 'Cascadia Code', 'Consolas', monospace;
-    font-size: 10px;
+    font-size: 9px;
     font-weight: 600;
     color: var(--text-dim);
     letter-spacing: 0.1em;
     text-transform: uppercase;
+    line-height: 1.3;
   }
 
   #header-controls {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     gap: 4px;
     -webkit-app-region: no-drag;
   }
@@ -244,8 +237,8 @@
 
 <div id="header">
   <div id="header-left">
-    <div class="logo-dot"></div>
-    <span id="header-title">Claude Usage</span>
+    <canvas id="clawd-canvas" width="45" height="45"></canvas>
+    <span id="header-title">CLAUDE<br>USAGE</span>
   </div>
   <div id="header-controls">
     <button class="ctrl-btn" onclick="if(window.pywebview) pywebview.api.close()" style="border-color:transparent; opacity:0.5;">✕</button>
@@ -457,8 +450,108 @@
     return key.replace(/_/g, ' ').toUpperCase();
   }
 
+  function setAnimation(enabled) {
+    const canvas = document.getElementById('clawd-canvas');
+    const title = document.getElementById('header-title');
+    if (enabled) {
+      canvas.style.display = '';
+      title.innerHTML = 'CLAUDE<br>USAGE';
+    } else {
+      canvas.style.display = 'none';
+      title.innerHTML = 'CLAUDE USAGE';
+    }
+    if (window.pywebview) {
+      const h = document.body.scrollHeight;
+      pywebview.api.resize(h);
+    }
+  }
+
   // 초기 모드 버튼 상태
   setMode(currentMode, false);
+
+  // ── Clawd 애니메이션 ──────────────────────────────────────
+  (function() {
+    const _ = 0, O = 1, B = 2;
+    const PAL = { 1: '#d4613c', 2: '#111111' };
+    const GRID = 20;
+    const PAD = 1; // 아웃라인용 1셀 패딩
+    const canvas = document.getElementById('clawd-canvas');
+    const SCALE = canvas.width / (GRID + PAD * 2);
+    const ctx = canvas.getContext('2d');
+
+    const IDLE = [
+      [_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_],
+      [_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_],
+      [_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_],
+      [_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_],
+      [_,_,_,_,O,O,O,O,O,O,O,O,O,O,O,O,_,_,_,_],
+      [_,_,_,O,O,B,B,O,O,O,O,O,O,B,B,O,O,_,_,_],
+      [_,_,_,O,O,B,B,O,O,O,O,O,O,B,B,O,O,_,_,_],
+      [_,_,_,O,O,B,B,O,O,O,O,O,O,B,B,O,O,_,_,_],
+      [_,_,_,O,O,B,B,O,O,O,O,O,O,B,B,O,O,_,_,_],
+      [_,_,_,O,O,B,B,O,O,O,O,O,O,B,B,O,O,_,_,_],
+      [_,_,_,O,O,O,O,O,O,O,O,O,O,O,O,O,O,_,_,_],
+      [_,_,_,O,O,O,O,O,O,O,O,O,O,O,O,O,O,_,_,_],
+      [_,_,_,O,O,O,O,O,O,O,O,O,O,O,O,O,O,_,_,_],
+      [_,_,_,_,_,O,_,_,O,_,_,O,_,_,O,_,_,_,_,_],
+      [_,_,_,_,_,O,_,_,O,_,_,O,_,_,O,_,_,_,_,_],
+      [_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_],
+      [_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_],
+      [_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_],
+      [_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_],
+      [_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_],
+    ];
+
+    const LC = [[8,0],[8,1],[8,2],[9,0],[9,1],[9,2],[10,0],[10,1],[11,0],[11,1]];
+    const RC_IDLE = [[8,17],[8,18],[8,19],[9,17],[9,18],[9,19],[10,18],[10,19],[11,18],[11,19]];
+    const RC_SA = [[2,17],[2,18],[2,19],[3,17],[3,18],[4,16],[4,17],[5,16],[5,17],[6,16]];
+    const RC_SB = [[1,17],[1,18],[1,19],[2,17],[2,18],[3,16],[3,17],[4,16],[4,17],[5,16]];
+
+    let curRC = RC_IDLE;
+
+    function isBody(r, c) {
+      if (r < 0 || r >= GRID || c < 0 || c >= GRID) return false;
+      if (IDLE[r][c] === O) return true;
+      for (const [lr,lc] of LC) if (lr===r && lc===c) return true;
+      for (const [rr,rc] of curRC) if (rr===r && rc===c) return true;
+      return false;
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = '#f5f5f5';
+      for (let r = 0; r < GRID; r++)
+        for (let c = 0; c < GRID; c++)
+          if (isBody(r, c))
+            for (let dr = -1; dr <= 1; dr++)
+              for (let dc = -1; dc <= 1; dc++)
+                if (!isBody(r+dr, c+dc))
+                  ctx.fillRect((c+dc+PAD)*SCALE, (r+dr+PAD)*SCALE, SCALE, SCALE);
+      for (let r = 0; r < GRID; r++)
+        for (let c = 0; c < GRID; c++)
+          if (IDLE[r][c]) { ctx.fillStyle = PAL[IDLE[r][c]]; ctx.fillRect((c+PAD)*SCALE, (r+PAD)*SCALE, SCALE, SCALE); }
+      ctx.fillStyle = PAL[O];
+      for (const [r,c] of LC) ctx.fillRect((c+PAD)*SCALE, (r+PAD)*SCALE, SCALE, SCALE);
+      for (const [r,c] of curRC) ctx.fillRect((c+PAD)*SCALE, (r+PAD)*SCALE, SCALE, SCALE);
+    }
+
+    const SEQ = [
+      ...Array(120).fill(0),
+      ...Array(12).fill(1), ...Array(12).fill(2),
+      ...Array(12).fill(1), ...Array(12).fill(2),
+      ...Array(12).fill(1), ...Array(12).fill(2),
+    ];
+    let idx = 0;
+
+    function animate() {
+      const s = SEQ[idx % SEQ.length];
+      curRC = s === 0 ? RC_IDLE : s === 1 ? RC_SA : RC_SB;
+      draw();
+      idx++;
+      requestAnimationFrame(animate);
+    }
+    animate();
+  })();
 </script>
 </body>
 </html>

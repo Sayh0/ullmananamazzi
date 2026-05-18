@@ -152,6 +152,12 @@ def main():
             overlay.set_on_top(enabled)
             config.save(cfg)
 
+        def on_animation_toggle(icon, item):
+            enabled = not cfg.get("show_animation", True)
+            cfg["show_animation"] = enabled
+            overlay.set_animation(enabled)
+            config.save(cfg)
+
         def on_startup_toggle(icon, item):
             enabled = not cfg.get("start_with_windows", False)
             cfg["start_with_windows"] = enabled
@@ -182,6 +188,11 @@ def main():
                 "Always on Top",
                 on_overlay_toggle,
                 checked=lambda item: cfg.get("always_on_top_overlay", False),
+            ),
+            pystray.MenuItem(
+                "Show Animation",
+                on_animation_toggle,
+                checked=lambda item: cfg.get("show_animation", True),
             ),
             pystray.MenuItem(
                 "Start with Windows",
@@ -219,6 +230,8 @@ def main():
 
     # webview 준비 완료 후 호출되는 콜백 (별도 스레드에서 실행됨)
     def on_ready():
+        if not cfg.get("show_animation", True):
+            overlay.set_animation(False)
         overlay.show()
 
     # 오버레이를 메인 스레드에서 실행 (블로킹)
