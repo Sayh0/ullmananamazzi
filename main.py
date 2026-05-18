@@ -217,8 +217,7 @@ def main():
 
     # webview 준비 완료 후 호출되는 콜백 (별도 스레드에서 실행됨)
     def on_ready():
-        if cfg.get("always_on_top_overlay", False):
-            overlay.show()
+        overlay.show()
 
     # 오버레이를 메인 스레드에서 실행 (블로킹)
     overlay.start(on_ready=on_ready)
