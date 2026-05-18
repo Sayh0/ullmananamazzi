@@ -1,5 +1,7 @@
 # [공유] Claude Code 사용량을 트레이 아이콘으로 실시간 확인하기
 
+> **[다운로드 (최신 버전)](https://github.com/Sayh0/ullmananamazzi/releases/latest)** — zip 다운로드 → 압축 해제 → `ullmananamazzi.exe` 실행
+
 **G_One E4U**
 
 &nbsp;
