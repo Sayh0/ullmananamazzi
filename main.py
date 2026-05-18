@@ -4,6 +4,8 @@ Claude Usage Widget - 진입점
 트레이 아이콘 + 폴링 루프 + 오버레이 창 통합
 """
 
+__version__ = "1.1.0"
+
 import sys
 import threading
 import time

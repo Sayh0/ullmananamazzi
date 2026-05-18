@@ -34,7 +34,7 @@
     overflow: hidden;
     border: 1px solid var(--border);
     user-select: none;
-    min-width: 240px;
+    min-width: 200px;
   }
 
   /* 드래그 핸들 */
@@ -229,13 +229,6 @@
     align-items: center;
   }
 
-  #footer-version {
-    font-family: 'JetBrains Mono', 'Cascadia Code', 'Consolas', monospace;
-    font-size: 9px;
-    color: var(--text-dim);
-    opacity: 0.4;
-  }
-
   #stale-indicator {
     font-family: 'JetBrains Mono', 'Cascadia Code', 'Consolas', monospace;
     font-size: 9px;
@@ -255,8 +248,6 @@
     <span id="header-title">Claude Usage</span>
   </div>
   <div id="header-controls">
-    <button class="ctrl-btn" id="btn-simple" onclick="setMode('simple')">Simple</button>
-    <button class="ctrl-btn" id="btn-detailed" onclick="setMode('detailed')">Detail</button>
     <button class="ctrl-btn" onclick="if(window.pywebview) pywebview.api.close()" style="border-color:transparent; opacity:0.5;">✕</button>
   </div>
 </div>
@@ -271,7 +262,6 @@
 </div>
 
 <div id="footer">
-  <span id="footer-version">v1.0.0</span>
   <span id="stale-indicator">⚠ stale</span>
 </div>
 
@@ -321,8 +311,6 @@
 
   function setMode(mode, notify = true) {
     currentMode = mode;
-    document.getElementById('btn-simple').classList.toggle('active', mode === 'simple');
-    document.getElementById('btn-detailed').classList.toggle('active', mode === 'detailed');
     renderContent();
     if (notify && window.pywebview) {
       pywebview.api.set_mode(mode);

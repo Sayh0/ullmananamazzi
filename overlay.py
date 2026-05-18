@@ -50,8 +50,8 @@ class OverlayWindow:
         self.window = webview.create_window(
             title="Claude Usage",
             url=str(HTML_PATH.resolve()),
-            width=260,
-            height=220,
+            width=200,
+            height=160,
             x=x,
             y=y,
             resizable=False,
@@ -80,7 +80,7 @@ class OverlayWindow:
 
             def resize(self, height: int):
                 if overlay.window and not overlay._hidden:
-                    overlay.window.resize(260, int(height))
+                    overlay.window.resize(200, int(height))
 
             def close(self):
                 overlay.hide()
