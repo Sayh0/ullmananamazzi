@@ -1,6 +1,6 @@
 """
 build.py
-PyInstaller로 단일 EXE를 생성합니다.
+PyInstaller로 EXE를 생성합니다.
 
 사용법:
     pip install pyinstaller
@@ -17,7 +17,7 @@ HERE = Path(__file__).parent
 def build():
     args = [
         sys.executable, "-m", "PyInstaller",
-        "--onefile",                        # 단일 EXE
+        "--onedir",                         # 폴더 배포 (즉시 실행)
         "--windowed",                       # 콘솔 창 숨김
         "--name", "ullmananamazzi",
         "--add-data", f"{HERE / 'popup.html'};.",   # HTML을 EXE에 번들
@@ -30,9 +30,9 @@ def build():
     result = subprocess.run(args, cwd=HERE)
 
     if result.returncode == 0:
-        exe = HERE / "dist" / "ullmananamazzi.exe"
-        print(f"\nDone: {exe}")
-        print("  dist/ullmananamazzi.exe 를 원하는 곳에 복사해서 실행하세요.")
+        out = HERE / "dist" / "ullmananamazzi"
+        print(f"\nDone: {out}")
+        print("  dist/ullmananamazzi/ 폴더를 배포하세요. 안의 ullmananamazzi.exe를 실행합니다.")
     else:
         print("\nBuild failed")
         sys.exit(1)

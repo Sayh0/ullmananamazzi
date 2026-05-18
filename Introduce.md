@@ -71,13 +71,13 @@
 https://github.com/Sayh0/ullmananamazzi
 ```
 
-**`dist/ullmananamazzi.exe` 다운로드 후 원하는 위치에 복사합니다.**
+**`dist/ullmananamazzi/` 폴더를 다운로드 후 원하는 위치에 복사합니다.**
 
 &nbsp;
 
 **Step 2. 실행**
 
-**`ullmananamazzi.exe` 실행 시 트레이 아이콘이 나타납니다.**
+**폴더 안의 `ullmananamazzi.exe` 실행 시 트레이 아이콘이 나타납니다.**
 
 **Claude Code가 설치되어 있고 로그인된 상태라면 별도 설정 없이 바로 동작합니다.**
 
@@ -91,7 +91,7 @@ https://github.com/Sayh0/ullmananamazzi
 |------|------|
 | 갱신 주기 | 120초 |
 | 별도 로그인 | 불필요 (Claude Code 토큰 재활용) |
-| 설치 크기 | 약 19MB (단일 EXE) |
+| 설치 크기 | 약 19MB (폴더 배포) |
 | 요구사항 | Windows 10/11, Claude Code 로그인 상태 |
 
 &nbsp;

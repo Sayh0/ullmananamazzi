@@ -16,7 +16,7 @@ python main.py
 # EXE 빌드
 pip install pyinstaller
 python build.py
-# 결과: dist/ullmananamazzi.exe
+# 결과: dist/ullmananamazzi/ 폴더
 ```
 
 테스트 프레임워크 없음. 수동 테스트로 검증.

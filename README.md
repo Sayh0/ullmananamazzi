@@ -69,7 +69,7 @@ claude-usage-widget/
 ├── config.py        config.json 읽기/저장, 시작 프로그램 레지스트리 설정
 ├── logger.py        RotatingFileHandler 기반 전역 로거 설정
 ├── popup.html       위젯 UI — 프로그레스 바, 카운트다운, 모드 전환
-├── build.py         PyInstaller 단일 EXE 빌드 스크립트
+├── build.py         PyInstaller EXE 빌드 스크립트 (onedir)
 ├── widget.log       실행 로그 (자동 생성, 512KB × 3 롤링)
 ├── config.json      사용자 설정 (자동 생성)
 ├── FIX.md           수정/오류 조치 기록
@@ -166,10 +166,10 @@ Edge가 설치된 PC라면 WebView2도 함께 설치되어 있습니다.
 Python 설치 없이 바로 실행할 수 있습니다.
 
 ```
-dist/ullmananamazzi.exe
+dist/ullmananamazzi/ullmananamazzi.exe
 ```
 
-원하는 위치에 복사 후 실행하면 됩니다. `config.json`과 `widget.log`는 EXE와 같은 폴더에 자동 생성됩니다.
+`dist/ullmananamazzi/` 폴더를 통째로 원하는 위치에 복사 후 안의 `ullmananamazzi.exe`를 실행합니다. `config.json`과 `widget.log`는 EXE와 같은 폴더에 자동 생성됩니다.
 
 ### 방법 B — 소스에서 직접 실행
 
@@ -199,7 +199,7 @@ pip install pyinstaller
 python build.py
 ```
 
-빌드 완료 후 `dist/ClaudeUsageWidget.exe` 파일 하나만 원하는 위치에 복사해서 실행합니다.
+빌드 완료 후 `dist/ullmananamazzi/` 폴더를 통째로 원하는 위치에 복사해서 안의 `ullmananamazzi.exe`를 실행합니다.
 
 > `config.json`과 `widget.log`는 EXE와 같은 폴더에 자동 생성됩니다.
 
