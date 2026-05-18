@@ -57,7 +57,7 @@
 
 **Claude Code의 OAuth 토큰을 재활용하므로 별도 로그인이 없습니다.**
 
-**토큰 만료 시 자동 갱신하며, 재로그인이 필요한 경우 위젯에 빨간 글씨로 안내합니다.**
+**토큰 만료 시 자동 갱신하며, Claude Code CLI 재실행이 필요한 경우 위젯이 자동으로 열려 안내합니다.**
 
 &nbsp;
 
@@ -80,6 +80,8 @@ https://github.com/Sayh0/ullmananamazzi
 **`ullmananamazzi.exe` 실행 시 트레이 아이콘이 나타납니다.**
 
 **Claude Code가 설치되어 있고 로그인된 상태라면 별도 설정 없이 바로 동작합니다.**
+
+> **첫 실행 시**: Claude Code CLI 로그인이 안 된 상태이면 위젯이 자동으로 열려 안내 메시지를 표시합니다. 터미널에서 `claude` 실행 후 `/login`으로 로그인하세요.
 
 &nbsp;
 
