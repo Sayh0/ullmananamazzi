@@ -2,6 +2,8 @@
 
 Claude.ai 구독 플랜의 사용량(5시간 세션, 주간 한도, 추가 사용량)을 실시간으로 모니터링하는 Windows 트레이 위젯.
 
+> **[다운로드 (최신 버전)](https://github.com/Sayh0/ullmananamazzi/releases/latest)** — zip 다운로드 → 압축 해제 → `ullmananamazzi.exe` 실행
+
 ---
 
 ## 미리보기
