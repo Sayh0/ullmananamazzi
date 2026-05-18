@@ -13,8 +13,7 @@ __pycache__/
 # PyInstaller 빌드
 build/
 *.spec
-dist/*
-!dist/ullmananamazzi/
+dist/
 
 # IDE
 .vscode/

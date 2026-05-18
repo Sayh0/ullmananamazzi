@@ -68,10 +68,10 @@
 **Step 1. 실행 파일 다운로드**
 
 ```
-https://github.com/Sayh0/ullmananamazzi
+https://github.com/Sayh0/ullmananamazzi/releases
 ```
 
-**`dist/ullmananamazzi/` 폴더를 다운로드 후 원하는 위치에 복사합니다.**
+**최신 zip을 다운로드하고 압축을 풀어 원하는 위치에 복사합니다.**
 
 &nbsp;
 

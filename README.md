@@ -165,11 +165,7 @@ Edge가 설치된 PC라면 WebView2도 함께 설치되어 있습니다.
 
 Python 설치 없이 바로 실행할 수 있습니다.
 
-```
-dist/ullmananamazzi/ullmananamazzi.exe
-```
-
-`dist/ullmananamazzi/` 폴더를 통째로 원하는 위치에 복사 후 안의 `ullmananamazzi.exe`를 실행합니다. `config.json`과 `widget.log`는 EXE와 같은 폴더에 자동 생성됩니다.
+[GitHub Releases](https://github.com/Sayh0/ullmananamazzi/releases)에서 최신 zip을 다운로드한 뒤 압축을 풀고 `ullmananamazzi.exe`를 실행합니다. `config.json`과 `widget.log`는 EXE와 같은 폴더에 자동 생성됩니다.
 
 ### 방법 B — 소스에서 직접 실행
 
@@ -199,7 +195,7 @@ pip install pyinstaller
 python build.py
 ```
 
-빌드 완료 후 `dist/ullmananamazzi/` 폴더를 통째로 원하는 위치에 복사해서 안의 `ullmananamazzi.exe`를 실행합니다.
+빌드 완료 후 `dist/ullmananamazzi/` 폴더가 생성됩니다. 안의 `ullmananamazzi.exe`를 실행합니다.
 
 > `config.json`과 `widget.log`는 EXE와 같은 폴더에 자동 생성됩니다.
 
