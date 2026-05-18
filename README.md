@@ -122,6 +122,10 @@ POST https://console.anthropic.com/v1/oauth/token
 
 갱신 성공 시 새 토큰을 기존 파일 구조를 보존하며 atomic write(`.tmp` → `replace`)로 저장합니다.
 
+### 첫 실행 안내
+
+Claude Code CLI가 설치되지 않았거나 로그인되지 않은 상태에서 위젯을 실행하면, 위젯이 자동으로 표시되어 **"Claude Code CLI 재실행 필요"** 안내를 보여줍니다.
+
 ### 재로그인 필요 상태
 
 refresh가 실패하면 위젯에 빨간 글씨로 안내가 표시됩니다.
@@ -181,8 +185,10 @@ pip install -r requirements.txt
 python main.py
 ```
 
-실행 후 시스템 트레이(우측 하단)에 아이콘이 나타납니다.  
+실행 후 시스템 트레이(우측 하단)에 아이콘이 나타납니다.
 이미 실행 중인 인스턴스가 있으면 중복 실행 없이 즉시 종료됩니다 (Windows 네임드 뮤텍스).
+
+> **첫 실행 시**: Claude Code CLI 로그인이 안 된 상태이면 위젯이 자동으로 열려 안내 메시지를 표시합니다. 터미널에서 `claude` 실행 후 `/login`으로 로그인하세요.
 
 ---
 
