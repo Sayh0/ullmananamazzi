@@ -63,6 +63,9 @@ class OverlayWindow:
             js_api=self._make_api(),
         )
 
+        # 작업 표시줄에서 숨기기
+        self.window.events.shown += self._hide_from_taskbar
+
         # 창 이동 시 위치 저장
         self.window.events.moved += self._on_moved
 
@@ -86,6 +89,43 @@ class OverlayWindow:
                 overlay.hide()
 
         return Api()
+
+    def _hide_from_taskbar(self):
+        """WS_EX_TOOLWINDOW 스타일 적용으로 작업 표시줄에서 숨김."""
+        try:
+            import ctypes
+            from ctypes import wintypes
+
+            user32 = ctypes.windll.user32
+            GWL_EXSTYLE = -20
+            WS_EX_TOOLWINDOW = 0x00000080
+            WS_EX_APPWINDOW = 0x00040000
+
+            # EnumWindows로 현재 프로세스의 창 찾기
+            pid = __import__("os").getpid()
+            found_hwnd = []
+
+            @ctypes.WINFUNCTYPE(ctypes.c_bool, wintypes.HWND, wintypes.LPARAM)
+            def enum_cb(hwnd, _):
+                wnd_pid = wintypes.DWORD()
+                user32.GetWindowThreadProcessId(hwnd, ctypes.byref(wnd_pid))
+                if wnd_pid.value == pid and user32.IsWindowVisible(hwnd):
+                    found_hwnd.append(hwnd)
+                return True
+
+            user32.EnumWindows(enum_cb, 0)
+
+            for hwnd in found_hwnd:
+                style = user32.GetWindowLongW(hwnd, GWL_EXSTYLE)
+                style = (style | WS_EX_TOOLWINDOW) & ~WS_EX_APPWINDOW
+                user32.SetWindowLongW(hwnd, GWL_EXSTYLE, style)
+                # 변경 적용을 위해 숨겼다 다시 표시
+                user32.ShowWindow(hwnd, 0)  # SW_HIDE
+                user32.ShowWindow(hwnd, 5)  # SW_SHOW
+
+            _log.info("hide_from_taskbar: applied to %d window(s)", len(found_hwnd))
+        except Exception as e:
+            _log.warning("hide_from_taskbar failed: %s", e)
 
     def _on_moved(self, x, y):
         self.cfg["overlay_x"] = x
@@ -123,6 +163,7 @@ class OverlayWindow:
             try:
                 self.window.show()
                 self._hidden = False
+                self._hide_from_taskbar()
             except Exception:
                 pass
 

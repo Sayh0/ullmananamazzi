@@ -325,9 +325,7 @@
   function renderContent() {
     if (!usageData) return;
 
-    const now = new Date();
-    const ago = lastUpdated ? Math.round((Date.now() - lastUpdated) / 1000) : 0;
-    document.getElementById('status-text').textContent = `Updated ${ago}s ago`;
+    document.getElementById('status-text').textContent = '';
 
     if (currentMode === 'simple') {
       renderSimple();
