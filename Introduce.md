@@ -46,7 +46,7 @@
 
 **🗂️ 위젯 팝업 — 상세 사용량 확인**
 
-**트레이 아이콘 클릭 시 팝업이 열리며 항목별 프로그레스 바와 리셋까지 남은 시간을 표시합니다.**
+**트레이 아이콘 클릭 시 팝업이 열리며 항목별 프로그레스 바와 리셋까지 남은 시간을 표시합니다. 헤더에는 Clawd 스크래치 애니메이션이 표시됩니다.**
 
 | 항목 | 내용 |
 |------|------|
@@ -95,6 +95,7 @@ https://github.com/Sayh0/ullmananamazzi/releases
 | 별도 로그인 | 불필요 (Claude Code 토큰 재활용) |
 | 설치 크기 | 약 19MB (폴더 배포) |
 | 요구사항 | Windows 10/11, Claude Code 로그인 상태 |
+| 트레이 메뉴 | Show/Hide, Always on Top, Show Animation, Display Mode, Quit |
 
 &nbsp;
 
