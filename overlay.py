@@ -69,7 +69,7 @@ class OverlayWindow:
         # 창 이동 시 위치 저장
         self.window.events.moved += self._on_moved
 
-        webview.start(debug=False, func=on_ready)
+        webview.start(debug=False, func=on_ready, gui="edgechromium")
 
     def _make_api(self):
         """JS에서 pywebview.api.xxx() 로 호출 가능한 API 객체."""

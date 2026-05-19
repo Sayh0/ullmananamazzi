@@ -83,6 +83,8 @@ https://github.com/Sayh0/ullmananamazzi/releases
 
 **Claude Code가 설치되어 있고 로그인된 상태라면 별도 설정 없이 바로 동작합니다.**
 
+> **Windows SmartScreen 경고**: 첫 실행 시 "Windows가 PC를 보호했습니다" 경고가 나타날 수 있습니다. **"추가 정보"** → **"실행"** 을 클릭하세요.
+
 > **첫 실행 시**: Claude Code CLI 로그인이 안 된 상태이면 위젯이 자동으로 열려 안내 메시지를 표시합니다. 터미널에서 `claude` 실행 후 `/login`으로 로그인하세요.
 
 &nbsp;

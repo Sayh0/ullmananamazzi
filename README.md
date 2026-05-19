@@ -161,6 +161,8 @@ Python 설치 없이 바로 실행할 수 있습니다.
 
 [GitHub Releases](https://github.com/Sayh0/ullmananamazzi/releases)에서 최신 zip을 다운로드한 뒤 압축을 풀고 `ullmananamazzi.exe`를 실행합니다. `config.json`과 `widget.log`는 EXE와 같은 폴더에 자동 생성됩니다.
 
+> **Windows SmartScreen 경고**: 첫 실행 시 "Windows가 PC를 보호했습니다" 경고가 나타날 수 있습니다. **"추가 정보"** → **"실행"** 을 클릭하면 정상 실행됩니다. (코드 서명 미적용으로 인한 정상 동작)
+
 ### 방법 B — 소스에서 직접 실행
 
 #### 1. 의존성 설치
