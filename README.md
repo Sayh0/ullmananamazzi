@@ -73,6 +73,7 @@ claude-usage-widget/
 ├── config.py        config.json 읽기/저장, 시작 프로그램 레지스트리 설정
 ├── logger.py        RotatingFileHandler 기반 전역 로거 설정
 ├── popup.html       위젯 UI — Clawd 애니메이션, 프로그레스 바, 카운트다운
+├── app.ico          EXE 아이콘 (Clawd 스크래치 포즈 픽셀아트)
 ├── build.py         PyInstaller EXE 빌드 스크립트 (onedir)
 ├── widget.log       실행 로그 (자동 생성, 512KB × 3 롤링)
 └── config.json      사용자 설정 (자동 생성)
