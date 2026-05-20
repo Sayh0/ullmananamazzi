@@ -20,6 +20,7 @@ def build():
         "--onedir",                         # 폴더 배포 (즉시 실행)
         "--windowed",                       # 콘솔 창 숨김
         "--name", "ullmananamazzi",
+        "--icon", str(HERE / "app.ico"),
         "--add-data", f"{HERE / 'popup.html'};.",   # HTML을 EXE에 번들
         "--hidden-import", "pystray._win32",
         "--hidden-import", "PIL._tkinter_finder",
