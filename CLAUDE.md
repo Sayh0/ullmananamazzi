@@ -32,6 +32,7 @@ python build.py
 - `auth.py` — `~/.claude/.credentials.json`에서 OAuth 토큰 읽기. 만료 60초 전 자동 갱신 (직접 OAuth 엔드포인트 호출). 상태: ok/reauth_needed/no_credentials/no_refresh_token/transient
 - `api.py` — `api.anthropic.com/api/oauth/usage` 폴링. 429 에러만 re-raise (폴링 루프에서 5분 대기)
 - `overlay.py` — pywebview 창 관리. `updateData()`, `markStale()`, `setMode()`, `setAnimation()` JS 함수 호출로 UI 갱신. WS_EX_TOOLWINDOW로 작업 표시줄 숨김
+- `updater.py` — GitHub Releases API로 최신 버전 체크. 현재 `__version__`과 비교하여 새 버전 태그 반환
 - `config.py` — config.json 읽기/저장 + Windows 레지스트리 자동시작 설정
 - `logger.py` — RotatingFileHandler (512KB x 3). 네임스페이스: `widget.*`
 - `popup.html` — 위젯 UI. Clawd 애니메이션, Simple/Detailed 모드. `pywebview.api`로 Python 콜백

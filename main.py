@@ -4,7 +4,7 @@ Claude Usage Widget - 진입점
 트레이 아이콘 + 폴링 루프 + 오버레이 창 통합
 """
 
-__version__ = "1.3.2"
+__version__ = "1.4.0"
 
 import sys
 import threading
@@ -15,6 +15,7 @@ import config
 import api
 import auth
 import logger
+import updater
 from overlay import OverlayWindow
 
 logger.setup()
@@ -77,6 +78,10 @@ def main():
         draw.text((x, y), text, fill=(255, 255, 255, 255), font=font)
         return img
 
+    # ── 업데이트 체크 상태 ───────────────────────────────────
+    _update_tag = [None]  # 새 버전 태그 (예: "v1.4.0"), 없으면 None
+    _UPDATE_CHECK_INTERVAL = 3600  # 1시간마다 체크
+
     # ── 폴링 스레드 ──────────────────────────────────────────
     _FAIL_NOTIFY_THRESHOLD = 5  # 연속 실패 N회 후 토스트 알림
 
@@ -92,8 +97,16 @@ def main():
     def poll_loop():
         fail_count = 0
         notified = False
+        last_update_check = 0
 
         while True:
+            # 업데이트 체크 (첫 실행 + 이후 1시간마다)
+            now = time.time()
+            if not _update_tag[0] and now - last_update_check >= _UPDATE_CHECK_INTERVAL:
+                last_update_check = now
+                tag = updater.check_update(__version__)
+                if tag:
+                    _update_tag[0] = tag
             try:
                 data = api.fetch_usage()
                 if data:
@@ -174,6 +187,10 @@ def main():
             overlay.update_mode("detailed")
             config.save(cfg)
 
+        def on_open_release(icon, item):
+            import webbrowser
+            webbrowser.open(updater.RELEASE_PAGE)
+
         def on_quit(icon, item):
             config.save(cfg)
             icon.stop()
@@ -182,6 +199,12 @@ def main():
             sys.exit(0)
 
         menu = pystray.Menu(
+            pystray.MenuItem(
+                lambda item: f"Update available ({_update_tag[0]})" if _update_tag[0] else "No updates",
+                on_open_release,
+                enabled=lambda item: _update_tag[0] is not None,
+            ),
+            pystray.Menu.SEPARATOR,
             pystray.MenuItem("Show / Hide", on_toggle, default=True),
             pystray.Menu.SEPARATOR,
             pystray.MenuItem(

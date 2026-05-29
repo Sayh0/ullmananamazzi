@@ -39,7 +39,7 @@ def set_start_with_windows(enabled: bool) -> None:
         import winreg
         key_path = r"Software\Microsoft\Windows\CurrentVersion\Run"
         app_name = "ullmananamazzi"
-        exe_path = sys.executable if getattr(sys, "frozen", False) else f'"{sys.executable}" "{Path(__file__).parent / "main.py"}"'
+        exe_path = f'"{sys.executable}"' if getattr(sys, "frozen", False) else f'"{sys.executable}" "{Path(__file__).parent / "main.py"}"'
 
         with winreg.OpenKey(winreg.HKEY_CURRENT_USER, key_path, 0, winreg.KEY_SET_VALUE) as key:
             if enabled:
